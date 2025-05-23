@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+
+int stack[MAX];
+int aux[MAX];
+int top = -1, topAux = -1;
+
+void push(int x) {
+    stack[++top] = x;
+}
+
+int pop() {
+    return stack[top--];
+}
+
+int peek() {
+    return stack[top];
+}
+
+void pushAux(int x) {
+    aux[++topAux] = x;
+}
+
+int popAux() {
+    return aux[topAux--];
+}
+
+int peekAux() {
+    return aux[topAux];
+}
+
+int main() {
+    push(3);
+    push(1);
+    push(4);
+    push(2);
+    push(5);
+
+    while (top >= 0) {
+        int temp = pop();
+        while (topAux >= 0 && peekAux() > temp)
+            push(popAux());
+        pushAux(temp);
+    }
+
+    while (topAux >= 0)
+        printf("%d ", popAux());
+
+    return 0;
+}
