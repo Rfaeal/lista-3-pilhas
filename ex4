@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+
+int stack[MAX];
+int aux[MAX];
+int top = -1, topAux = -1;
+
+void push(int x) {
+    stack[++top] = x;
+}
+
+int pop() {
+    return stack[top--];
+}
+
+void pushAux(int x) {
+    aux[++topAux] = x;
+}
+
+int popAux() {
+    return aux[topAux--];
+}
+
+int main() {
+    push(1);
+    push(4);
+    push(5);
+    push(2);
+    push(7);
+
+    while (top >= 0) {
+        int valor = pop();
+        if (valor % 2 != 0)
+            pushAux(valor);
+    }
+
+    while (topAux >= 0)
+        push(popAux());
+
+    while (top >= 0)
+        printf("%d ", pop());
+
+    return 0;
+}
