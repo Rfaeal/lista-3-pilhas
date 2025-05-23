@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+#includde <stdio.h>
+#define MAX 100
+
+char undo[MAX][MAX];
+char redo[MAX][MAX];
+int topUndo = -1, topRedo = -1;
+
+void pushUndo(char *text) {
+    strcpy(undo[++topUndo], text);
+}
+
+void pushRedo(char *text) {
+    strcpy(redo[++topRedo], text);
+}
+
+char* popUndo() {
+    return undo[topUndo--];
+}
+
+char* popRedo() {
+    return redo[topRedo--];
+}
+
+int main() {
+    char texto[MAX] = "";
+    char comando[MAX];
+    char temp[MAX];
+
+    while (1) {
+        printf("Texto atual: %s\n", texto);
+        printf("Digite (escrever/undo/redo/sair): ");
+        scanf("%s", comando);
+
+        if (strcmp(comando, "escrever") == 0) {
+            pushUndo(texto);
+            printf("Digite o texto: ");
+            scanf(" %[^\n]", temp);
+            strcpy(texto, temp);
+            topRedo = -1;
+        } else if (strcmp(comando, "undo") == 0 && topUndo >= 0) {
+            pushRedo(texto);
+            strcpy(texto, popUndo());
+        } else if (strcmp(comando, "redo") == 0 && topRedo >= 0) {
+            pushUndo(texto);
+            strcpy(texto, popRedo());
+        } else if (strcmp(comando, "sair") == 0) {
+            break;
+        }
+    }
+
+    return 0;
+}
